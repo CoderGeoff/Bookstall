@@ -1,0 +1,13 @@
+<head>
+</head>
+<body>
+<p id=outcome></p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+"use strict";
+const pageParameters = new URLSearchParams(window.location.search);
+const text = pageParameters.has("text") ? pageParameters.get("text") : "invalid request";
+console.log(outcome);
+$("#outcome").text(text);
+</script>
+</body>
