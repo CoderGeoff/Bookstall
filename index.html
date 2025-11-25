@@ -16,6 +16,12 @@ if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.
 	const item = pageParameters.get("item");
 	const price = pageParameters.get("price");
 	const key = { applicationAccessKey: pageParameters.get("key") };
+
+	// do this early -> fail before sending the url
+	const pathname = window.location.pathname;
+	const lastIndexOfSlash = pathname.lastIndexOf("/");
+	const pathroot = lastIndexOfSlash > -1 ? pathname.slice(0, lastIndexOfSlash) : "";
+	const successUrl = window.location.protocol + window.location.hostname + '/' + pathroot + "/outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
 		
 	const body = JSON.stringify({
 		Action: "Add",
@@ -35,10 +41,9 @@ if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.
 			console.log(addedRowsText);
 			if (addedRowsText.includes(item))
 			{
-				// all ok
-				outcome = "Confirmed: " + item + " at £" + price + ".";
+				// all ok; replace to prevent reloading
+				window.location.replace(successUrl);
 			}
-			outcomeElement.text(outcome);
 		},
 		error: function(request, errorDescription, exception) {
 			console.log("Error");
