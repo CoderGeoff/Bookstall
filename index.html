@@ -1,0 +1,37 @@
+<head>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+"use strict";
+const pageParameters = new URLSearchParams(window.location.search);
+if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.has("key")) {
+    const item = pageParameters.get("item");
+	const price = pageParameters.get("price");
+	const key = pageParameters.get("key");
+		
+	const body = JSON.stringify({
+		Action: "Add",
+		Rows: [{Item: item, Amount: price }]
+		});
+	
+	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action?applicationAccessKey=" + key;
+	const r = $.ajax({
+		url: url,
+		method: "POST",
+		data: body,
+		contentType: "application/json",
+		success: function (result) {
+			console.log("Success"); 
+			console.log(JSON.stringify(result)); 
+			console.log(JSON.stringify(r)); 
+		},
+		error: function(request, errorDescription, exception) {
+			console.log("Error:" + errorDescription);
+		},
+	});	
+} else {
+   window.alert("invalid request");
+}
+</script>
+</body>
