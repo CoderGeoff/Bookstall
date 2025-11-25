@@ -21,7 +21,10 @@ if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.
 	const pathname = window.location.pathname;
 	const lastIndexOfSlash = pathname.lastIndexOf("/");
 	const pathroot = lastIndexOfSlash > -1 ? pathname.slice(0, lastIndexOfSlash) : "";
-	const successUrl = window.location.protocol + window.location.hostname + '/' + pathroot + "/outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
+	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
+	
+	
+	https://codergeoff.github.io/Bookstall/codergeoff.github.io//Bookstall/outcome.html?text=Confirmed:%20Orthodox%20Study%20Bible%20at%20%C2%A312.95.
 		
 	const body = JSON.stringify({
 		Action: "Add",
