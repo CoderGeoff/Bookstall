@@ -2,36 +2,53 @@
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<p id=outcome>
+	Please wait while your transaction is being handled. 
+	</p>
 <script>
 "use strict";
+const outcomeElement = $("#outcome");
 const pageParameters = new URLSearchParams(window.location.search);
+
 if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.has("key")) {
-    const item = pageParameters.get("item");
+    var outcome = "Sorry, the transaction failed. Please try again.";
+    
+	const item = pageParameters.get("item");
 	const price = pageParameters.get("price");
-	const key = pageParameters.get("key");
+	const key = { applicationAccessKey: pageParameters.get("key") };
 		
 	const body = JSON.stringify({
 		Action: "Add",
 		Rows: [{Item: item, Amount: price }]
 		});
 	
-	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action?applicationAccessKey=" + key;
+	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action";
 	const r = $.ajax({
 		url: url,
 		method: "POST",
+		headers: key,
 		data: body,
 		contentType: "application/json",
 		success: function (result) {
 			console.log("Success"); 
-			console.log(JSON.stringify(result)); 
-			console.log(JSON.stringify(r)); 
+			const addedRowsText = JSON.stringify(result); 
+			console.log(addedRowsText);
+			if (addedRowsText.includes(item))
+			{
+				// all ok
+				outcome = "Confirmed: " + item + " at £" + price + ".";
+			}
+			outcomeElement.text(outcome);
 		},
 		error: function(request, errorDescription, exception) {
-			console.log("Error:" + errorDescription);
-		},
+			console.log("Error");
+			outcome = "<p>" + outcome + "<br/>Details: " + r.responseText + "</p>";
+			console.log(outcome);
+			outcomeElement.html(outcome);
+		}
 	});	
 } else {
-   window.alert("invalid request");
+    outcomeElement.text("Invalid request.");
 }
 </script>
 </body>
