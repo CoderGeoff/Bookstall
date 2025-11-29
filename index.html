@@ -40,7 +40,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 			console.log("Success"); 
 			const addedRowsText = JSON.stringify(result); 
 			console.log(addedRowsText);
-			if (addedRowsText.includes(item))
+			if (addedRowsText.includes(uniqueid))
 			{
 				// all ok; replace to prevent reloading
 				window.location.replace(successUrl);
@@ -58,5 +58,6 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 }
 </script>
 </body>
+
 
 
