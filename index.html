@@ -26,7 +26,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 	
 	const body = JSON.stringify({
 		Action: "Add",
-		Rows: [{UniqueId: uniqueid, Amount: price }]
+		Rows: [{ItemId: uniqueid, Amount: price }]
 		});
 	
 	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action";
@@ -62,6 +62,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 }
 </script>
 </body>
+
 
 
 
