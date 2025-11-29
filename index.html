@@ -45,6 +45,10 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 				// all ok; replace to prevent reloading
 				window.location.replace(successUrl);
 			}
+			else
+			{
+				outcomeElement.text("Internal error");
+			}
 		},
 		error: function(request, errorDescription, exception) {
 			console.log("Error");
@@ -58,6 +62,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 }
 </script>
 </body>
+
 
 
 
