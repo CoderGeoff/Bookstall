@@ -10,10 +10,11 @@
 const outcomeElement = $("#outcome");
 const pageParameters = new URLSearchParams(window.location.search);
 
-if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.has("key")) {
+if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParameters.has("price") && pageParameters.has("key")) {
     var outcome = "Sorry, the transaction failed. Please try again.";
     
 	const item = pageParameters.get("item");
+	const uniqueid = pageParameters.get("uniqueid");
 	const price = pageParameters.get("price");
 	const key = { applicationAccessKey: pageParameters.get("key") };
 
@@ -25,7 +26,7 @@ if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.
 	
 	const body = JSON.stringify({
 		Action: "Add",
-		Rows: [{Item: item, Amount: price }]
+		Rows: [{UniqueId: uniqueid, Amount: price }]
 		});
 	
 	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action";
@@ -57,4 +58,5 @@ if (pageParameters.has("item") && pageParameters.has("price") && pageParameters.
 }
 </script>
 </body>
+
 
