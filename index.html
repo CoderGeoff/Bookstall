@@ -1,4 +1,3 @@
-
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
@@ -33,7 +32,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 	const pathname = window.location.pathname;
 	const lastIndexOfSlash = pathname.lastIndexOf("/");
 	const pathroot = lastIndexOfSlash > -1 ? pathname.slice(0, lastIndexOfSlash) : "";
-	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20Â£" + price + ".";
+	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
 	
 	const postBody = JSON.stringify({
 		Action: "Add",
