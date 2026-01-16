@@ -17,6 +17,7 @@ $(document).ready(function(){
 });
 
 function updateStock() {
+console.log("History.state : ", history.state);
 const pageParameters = new URLSearchParams(window.location.search);
 const outcomeElement = $("#outcome");
 
@@ -71,3 +72,4 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 }
 </script>
 </body>
+
