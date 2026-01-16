@@ -1,30 +1,41 @@
+
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<style id='generate-style-inline-css'>
+body{line-height:32px;font-size:18px;margin:30px;color:#222222;font-family:Merriweather, serif;}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<p id=outcome>
-	Please wait while your transaction is being handled. 
-	</p>
+<p id=outcome>Please wait while your transaction is being handled - don't refresh the page!</p>
 <script>
 "use strict";
-const outcomeElement = $("#outcome");
+
+$(document).ready(function(){
+    updateStock();
+});
+
+function updateStock() {
 const pageParameters = new URLSearchParams(window.location.search);
+const outcomeElement = $("#outcome");
 
 if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParameters.has("price") && pageParameters.has("key")) {
     var outcome = "Sorry, the transaction failed. Please try again.";
     
 	const item = pageParameters.get("item");
 	const uniqueid = pageParameters.get("uniqueid");
-	const price = pageParameters.get("price");
+	const price = pageParameters.get("price"); 
 	const key = { applicationAccessKey: pageParameters.get("key") };
 
 	// do this early -> fail before sending the url
 	const pathname = window.location.pathname;
 	const lastIndexOfSlash = pathname.lastIndexOf("/");
 	const pathroot = lastIndexOfSlash > -1 ? pathname.slice(0, lastIndexOfSlash) : "";
-	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
+	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20Â£" + price + ".";
 	
-	const body = JSON.stringify({
+	const postBody = JSON.stringify({
 		Action: "Add",
 		Rows: [{ItemId: uniqueid, Amount: price }]
 		});
@@ -34,19 +45,17 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 		url: url,
 		method: "POST",
 		headers: key,
-		data: body,
+		data: postBody,
 		contentType: "application/json",
 		success: function (result) {
 			console.log("Success"); 
 			const addedRowsText = JSON.stringify(result); 
 			console.log(addedRowsText);
-			if (addedRowsText.includes(uniqueid))
-			{
+			if (addedRowsText.includes(uniqueid))  {
 				// all ok; replace to prevent reloading
 				window.location.replace(successUrl);
 			}
-			else
-			{
+			else {
 				outcomeElement.text("Internal error");
 			}
 		},
@@ -60,10 +69,6 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 } else {
     outcomeElement.text("Invalid request.");
 }
+}
 </script>
 </body>
-
-
-
-
-
