@@ -17,12 +17,12 @@ $(document).ready(function(){
 });
 
 function updateStock() {
-console.log("History.length : ", history.length);
+const isRefreshed = "_ir";
 const pageParameters = new URLSearchParams(window.location.search);
 const outcomeElement = $("#outcome");
 
 if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParameters.has("price") && pageParameters.has("key")) {
-    var outcome = "Sorry, the transaction failed. Please try again.";
+	var outcome = "Sorry, the transaction failed. Please try again.";
     
 	const item = pageParameters.get("item");
 	const uniqueid = pageParameters.get("uniqueid");
@@ -35,6 +35,15 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 	const pathroot = lastIndexOfSlash > -1 ? pathname.slice(0, lastIndexOfSlash) : "";
 	const successUrl = /*window.location.protocol + window.location.hostname + '/' + pathroot + */ "outcome.html?text=Confirmed:%20" + item + "%20at%20£" + price + ".";
 	
+	if (sessionStorage.getItem(isRefreshed)) {
+		// assume it went ok
+		console.log("Page has been refreshed by user");
+		sessionStorage.removeItem(isRefreshed);
+		window.location.replace(successUrl);
+		return;
+	}
+
+	sessionStorage.setItem(isRefreshed, "y");
 	const postBody = JSON.stringify({
 		Action: "Add",
 		Rows: [{ItemId: uniqueid, Amount: price }]
@@ -49,6 +58,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 		contentType: "application/json",
 		success: function (result) {
 			console.log("Success"); 
+			sessionStorage.removeItem(isRefreshed);
 			const addedRowsText = JSON.stringify(result); 
 			console.log(addedRowsText);
 			if (addedRowsText.includes(uniqueid))  {
@@ -60,6 +70,7 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 			}
 		},
 		error: function(request, errorDescription, exception) {
+			sessionStorage.removeItem(isRefreshed);
 			console.log("Error");
 			outcome = "<p>" + outcome + "<br/>Details: " + r.responseText + "</p>";
 			console.log(outcome);
@@ -72,5 +83,3 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 }
 </script>
 </body>
-
-
