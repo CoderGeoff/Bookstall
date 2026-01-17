@@ -43,13 +43,13 @@ if (pageParameters.has("item") && pageParameters.has("uniqueid") && pageParamete
 		return;
 	}
 
-	sessionStorage.setItem(isRefreshed, "y");
 	const postBody = JSON.stringify({
 		Action: "Add",
 		Rows: [{ItemId: uniqueid, Amount: price }]
 		});
 	
 	const url = "https://api.appsheet.com/api/v2/apps/f4a568db-d53d-4192-893d-d441950dfc61/tables/Transactions/Action";
+	sessionStorage.setItem(isRefreshed, "y");
 	const r = $.ajax({
 		url: url,
 		method: "POST",
